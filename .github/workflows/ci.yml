@@ -45,7 +45,7 @@ jobs:
             libxcb-xkb-dev \
             libxkbcommon-dev \
             libxkbcommon-x11-dev \
-            libGL-dev \
+            libgl-dev \
             libfontconfig1-dev
 
       - uses: dtolnay/rust-toolchain@stable
