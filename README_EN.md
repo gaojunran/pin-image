@@ -33,8 +33,9 @@ pin-image <IMAGE_PATH> [OPTIONS]
 | `--width <WIDTH>` | original image width | Window width |
 | `--height <HEIGHT>` | original image height | Window height |
 | `--location <LOCATION>` | `top-right` | Window position: `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-right` |
-| `--left-click <ACTION>` | `close` | Left click action: `copy`, `copy-close`, `close`, `nothing` |
+| `--left-click <ACTION>` | `nothing` | Left click action: `copy`, `copy-close`, `close`, `nothing` |
 | `--right-click <ACTION>` | `copy` | Right click action: `copy`, `copy-close`, `close`, `nothing` |
+| `--double-click <ACTION>` | `close` | Double click action: `copy`, `copy-close`, `close`, `nothing` |
 
 ### Click Actions
 

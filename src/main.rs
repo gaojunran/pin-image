@@ -45,12 +45,16 @@ struct Args {
     location: Location,
 
     /// 左键行为
-    #[arg(long, value_enum, default_value = "close")]
+    #[arg(long, value_enum, default_value = "nothing")]
     left_click: ClickAction,
 
     /// 右键行为
     #[arg(long, value_enum, default_value = "copy")]
     right_click: ClickAction,
+
+    /// 双击行为
+    #[arg(long, value_enum, default_value = "close")]
+    double_click: ClickAction,
 }
 
 struct PinImage {
@@ -59,6 +63,7 @@ struct PinImage {
     location: Location,
     left_click: ClickAction,
     right_click: ClickAction,
+    double_click: ClickAction,
     positioned: bool,
     rgba_for_copy: Vec<u8>,
 }
@@ -70,20 +75,29 @@ impl App for PinImage {
             self.positioned = true;
         }
 
-        let left_clicked = ctx.input(|i| i.pointer.primary_clicked());
         let right_clicked = ctx.input(|i| i.pointer.secondary_clicked());
-
-        if left_clicked {
-            self.handle_click(ctx, self.left_click);
-        }
-        if right_clicked {
-            self.handle_click(ctx, self.right_click);
-        }
 
         egui::CentralPanel::default().show(ctx, |ui| {
             if let Some(texture) = &self.texture {
                 let size = texture.size_vec2();
-                ui.image((texture.id(), size));
+                let response = ui.image((texture.id(), size)).interact(egui::Sense::click_and_drag());
+
+                if response.double_clicked() {
+                    self.handle_click(ctx, self.double_click);
+                } else if response.clicked() {
+                    self.handle_click(ctx, self.left_click);
+                }
+                if right_clicked {
+                    self.handle_click(ctx, self.right_click);
+                }
+
+                if response.dragged() {
+                    let delta = response.drag_delta();
+                    let current_pos = ctx.screen_rect().min;
+                    ctx.send_viewport_cmd(egui::ViewportCommand::OuterPosition(
+                        current_pos + delta,
+                    ));
+                }
             }
         });
     }
@@ -101,6 +115,7 @@ impl PinImage {
         location: Location,
         left_click: ClickAction,
         right_click: ClickAction,
+        double_click: ClickAction,
     ) -> Self {
         let color_image = egui::ColorImage::from_rgba_unmultiplied(
             [img_size[0] as usize, img_size[1] as usize],
@@ -114,6 +129,7 @@ impl PinImage {
             location,
             left_click,
             right_click,
+            double_click,
             positioned: false,
             rgba_for_copy: rgba,
         }
@@ -214,6 +230,7 @@ fn main() -> eframe::Result {
                 args.location,
                 args.left_click,
                 args.right_click,
+                args.double_click,
             );
             Ok(Box::new(app))
         }),

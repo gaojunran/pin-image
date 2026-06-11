@@ -33,8 +33,9 @@ pin-image <IMAGE_PATH> [OPTIONS]
 | `--width <WIDTH>` | 图片原始宽度 | 窗口宽度 |
 | `--height <HEIGHT>` | 图片原始高度 | 窗口高度 |
 | `--location <LOCATION>` | `top-right` | 窗口位置：`top-left`、`top-center`、`top-right`、`bottom-left`、`bottom-right` |
-| `--left-click <ACTION>` | `close` | 左键行为：`copy`、`copy-close`、`close`、`nothing` |
+| `--left-click <ACTION>` | `nothing` | 左键行为：`copy`、`copy-close`、`close`、`nothing` |
 | `--right-click <ACTION>` | `copy` | 右键行为：`copy`、`copy-close`、`close`、`nothing` |
+| `--double-click <ACTION>` | `close` | 双击行为：`copy`、`copy-close`、`close`、`nothing` |
 
 ### 点击行为说明
 
